@@ -82,7 +82,7 @@ export default function Footer() {
             </div>
             <p className="mt-6" style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
               <i className="fa-solid fa-envelope mr-2" />
-              astro@web3growth.io
+              astronuel904@gmailcom
             </p>
           </div>
         </div>

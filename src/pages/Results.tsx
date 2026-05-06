@@ -24,16 +24,14 @@ function useScrollEntrance() {
 }
 
 const results = [
-  { metric: '$8,200+', detail: 'PIXP Token presale contribution through campaign execution' },
-  { metric: '200+', detail: 'Honeyland user conversion within launch window' },
-  { metric: '$5K → $150K', detail: 'Fooz Token market cap growth' },
-  { metric: '100+', detail: 'Race Protocol onboarding campaign' },
-  { metric: '20+', detail: 'Fundylabs investor connections' },
-  { metric: '70 → 500+', detail: 'GameX Labs community scaling' },
-  { metric: '100 → 2,000+', detail: 'GameX Labs X account growth' },
-  { metric: '2X', detail: 'Overall market cap growth multiplier' },
+  { metric: '$4K', detail: 'PIXP Token presale raised through campaign execution' },
+  { metric: '$8,200', detail: 'DOOKIE presale raised' },
+  { metric: '$5K → $150K+', detail: 'FOOZ Token market cap growth in one week' },
+  { metric: '250+', detail: 'HoneyLand Gamers converted within launch window' },
+  { metric: '700+', detail: 'RACE Protocol onboarding campaign' },
+  { metric: '100 → 3,000+', detail: 'GameX Labs X account growth in a month' },
+  { metric: '2–5X', detail: 'Overall market cap growth multiplier' },
 ]
-
 const testimonials = [
   {
     quote: "Astro didn't just run a campaign, he architected a full growth system. Our community went from 70 to 500+ members in under a month. The engagement loops he built are still driving organic growth.",
@@ -42,6 +40,14 @@ const testimonials = [
   {
     quote: "The presale campaign exceeded our targets by 40%. Astro understands Web3 psychology at a level most marketers don't. Every piece of content had a strategic purpose.",
     author: 'Founder, PIXP Token',
+  },
+  {
+    quote: "Astro just gets it. Didn't need much back and forth, he understood what we were building and started opening the right doors almost immediately. A lot of people promise exposure, he actually brought conversations that mattered.",
+    author: 'Founder, FundiLabs',
+  },
+  {
+    quote: "What I liked about working with Astro is he didn't treat this like another promo job. He actually cared about getting people into the game and trying it. We saw real activity, real players coming in, not just empty traffic.",
+    author: 'Founder, HoneyLand',
   },
 ]
 

@@ -73,7 +73,7 @@ function HeroSection() {
   }, [])
 
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: '70vh' }}>
+    <section className="relative w-full overflow-hidden" style={{ height: '92vh' }}>
       <Hero3D />
 
       {/* Overlay UI */}
@@ -87,37 +87,72 @@ function HeroSection() {
           transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Top bar */}
-        <div className="flex justify-between items-start">
-          <span
-            className="font-mono-label"
-            style={{
-              fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-              letterSpacing: '0.08em',
-              color: 'var(--text-primary)',
-              fontWeight: 700,
-              
-                }}
-              >
-                I bring...
-              </span>
+        {/* Top bar — pfp + "I bring..." + socials */}
+        <div className="flex justify-between items-center">
+
+          {/* Left: pfp + label */}
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/astropfp.png"
+              alt="Astro_Nuel"
+              style={{
+                width: 'clamp(36px, 5vw, 48px)',
+                height: 'clamp(36px, 5vw, 48px)',
+                borderRadius: '50%',
+                border: '2px solid var(--neon-cyan)',
+                objectFit: 'cover',
+                boxShadow: '0 0 14px rgba(0, 212, 255, 0.5)',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              className="font-mono-label"
+              style={{
+                fontSize: 'clamp(1rem, 2.5vw, 1.8rem)',
+                letterSpacing: '0.08em',
+                color: 'var(--text-primary)',
+                fontWeight: 700,
+                fontStyle: 'italic',
+              }}
+            >
+              I bring...
+            </span>
+          </div>
+
+          {/* Right: socials */}
           <div className="flex gap-4">
-            <a href="https://x.com/Astro_nuel" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)' }} className="transition-colors duration-300 hover:text-white">
+            <a
+              href="https://x.com/Astro_nuel"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--text-muted)' }}
+              className="transition-colors duration-300 hover:text-white"
+            >
               <i className="fa-brands fa-x-twitter" style={{ fontSize: 18 }} />
             </a>
-            <a href="https://t.me/AstroNuel" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)' }} className="transition-colors duration-300 hover:text-white">
+            <a
+              href="https://t.me/AstroNuel"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--text-muted)' }}
+              className="transition-colors duration-300 hover:text-white"
+            >
               <i className="fa-brands fa-telegram" style={{ fontSize: 18 }} />
             </a>
-            <a href="https://linktr.ee/astro_nuel" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)' }} className="transition-colors duration-300 hover:text-white">
+            <a
+              href="https://linktr.ee/astro_nuel"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--text-muted)' }}
+              className="transition-colors duration-300 hover:text-white"
+            >
               <i className="fa-solid fa-link" style={{ fontSize: 18 }} />
             </a>
           </div>
         </div>
 
-
-
         {/* Center CTA */}
-        <div className="flex flex-col items-center justify-end flex-1 pb-0 mb-[-40px]">
+        <div className="flex flex-col items-center justify-end flex-1 pb-0 mb-[-20px] gap-3">
           <Link
             to="/contact"
             className="btn-ghost"
@@ -129,13 +164,32 @@ function HeroSection() {
           >
             Work With Me
           </Link>
+          <p
+            style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.75rem',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              opacity: loaded ? 0.6 : 0,
+              transition: 'opacity 0.8s ease 0.5s',
+            }}
+          >
+            Scroll to see what I've built
+          </p>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom bar — scroll indicator */}
         <div className="flex justify-between items-end">
-          {/* Scroll indicator */}
           <div className="flex flex-col items-center gap-2">
-            <div style={{ width: 1, height: 40, background: 'var(--text-muted)', position: 'relative', overflow: 'hidden' }}>
+            <div
+              style={{
+                width: 1,
+                height: 40,
+                background: 'var(--text-muted)',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+            >
               <div
                 style={{
                   width: 3,
@@ -150,6 +204,45 @@ function HeroSection() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile stats strip — pinned to bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 flex md:hidden justify-between items-center px-5 py-4"
+        style={{
+          zIndex: 2,
+          background: 'linear-gradient(to top, rgba(5,5,5,0.95) 0%, transparent 100%)',
+          borderTop: '1px solid rgba(0, 212, 255, 0.12)',
+        }}
+      >
+        {[
+          { value: '$8.2K', label: 'Raised' },
+          { value: '700+', label: 'Onboarded' },
+          { value: '5X', label: 'MC Growth' },
+        ].map((s) => (
+          <div key={s.label} className="text-center">
+            <p
+              style={{
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: 'var(--neon-cyan)',
+                lineHeight: 1,
+              }}
+            >
+              {s.value}
+            </p>
+            <p
+              style={{
+                fontSize: '0.6rem',
+                color: 'var(--text-muted)',
+                letterSpacing: '0.1em',
+                marginTop: 2,
+              }}
+            >
+              {s.label}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   )
@@ -209,9 +302,9 @@ function ProofStrip() {
       <div className="content-max grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
         {[
           { value: 8200, prefix: '$', suffix: '+', label: 'Presale Contributions' },
-          { value: 500, suffix: '+', label: 'Community Members Scaled' },
-          { value: 150, prefix: '$', suffix: 'K', label: 'Market Cap Growth' },
-          { value: 2000, suffix: '+', label: 'X Followers Gained' },
+          { value: 700, suffix: '+', label: 'Community Members Onboarded' },
+          { value: 150, prefix: '$', suffix: 'K+', label: 'Market Cap Growth' },
+          { value: 3000, suffix: '+', label: 'X Followers Gained' },
         ].map((m) => (
           <div key={m.label} className="metric-item">
             <p className="text-display-l font-display" style={{ color: 'var(--neon-cyan)' }}>
@@ -271,13 +364,13 @@ function ProjectsShowcase() {
   const ref = useScrollEntrance()
 
   const projects = [
-    { name: 'PIXP Token', tagline: '$8,200+ presale contribution', image: '/images/project-pixp.jpg' },
-    { name: 'Honeyland', tagline: '200+ users converted', image: '/images/project-honeyland.jpg' },
-    { name: 'Fooz Token', tagline: '$5K → $150K market cap', image: '/images/project-fooz.jpg' },
-    { name: 'Race Protocol', tagline: '100+ users onboarded', image: '/images/project-race.jpg' },
-    { name: 'Fundylabs', tagline: '20+ investors connected', image: '/images/project-fundylabs.jpg' },
+    { name: 'PIXP Token', tagline: '$4K presale raised', image: '/images/project-pixp.jpg' },
+    { name: 'HoneyLand', tagline: '250+ gamers converted', image: '/images/project-honeyland.jpg' },
+    { name: 'Fooz Token', tagline: '$5K → $150K+ market cap in a week', image: '/images/project-fooz.jpg' },
+    { name: 'RACE Protocol', tagline: '700+ onboarding campaign', image: '/images/project-race.jpg' },
+    { name: 'FundiLabs', tagline: '20+ investors connected', image: '/images/project-fundylabs.jpg' },
     { name: 'GMC', tagline: 'Community scaling system', image: '/images/project-gmc.jpg' },
-    { name: 'GameX Labs', tagline: '70 → 500+ community growth', image: '/images/project-gamex.jpg' },
+    { name: 'GameX Labs', tagline: '100 → 3K+ X account growth in a month', image: '/images/project-gamex.jpg' },
   ]
 
   const scroll = (dir: number) => {

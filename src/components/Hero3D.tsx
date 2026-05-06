@@ -142,7 +142,6 @@ function createAnimatedTexture(
   }
 }
 
-// Fallback particle background that renders immediately
 function createFallbackBackground(scene: THREE.Scene) {
   const count = 2000
   const positions = new Float32Array(count * 3)
@@ -174,41 +173,49 @@ export default function Hero3D() {
     const container = containerRef.current
     if (!container) return
 
-    const isMobile = window.innerWidth < 768
+    const W = container.offsetWidth
+    const H = container.offsetHeight
+    const isMobile = W < 768
+    const isSmallMobile = W < 400
 
-    // Scene setup
+    // ── Responsive values ──
+    const CAM_Z = isSmallMobile ? 22 : isMobile ? 19 : 13
+    const FOV = isMobile ? 55 : 40
+    const TEXT_SIZE = isSmallMobile ? 0.25 : isMobile ? 0.32 : 0.8
+    const TEXT_DEPTH = isSmallMobile ? 0.08 : isMobile ? 0.12 : 0.4
+    const SCATTER = isSmallMobile ? 3 : isMobile ? 4 : 10
+    const FOG_NEAR = isMobile ? 14 : 10
+    const FOG_FAR = isMobile ? 40 : 30
+
+    // Scene
     const scene = new THREE.Scene()
-    const bgColor = new THREE.Color('#080810')
-    scene.background = bgColor
-    scene.fog = new THREE.Fog('#080810', 10, 30)
+    scene.background = new THREE.Color('#080810')
+    scene.fog = new THREE.Fog('#080810', FOG_NEAR, FOG_FAR)
 
-    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100)
-    camera.position.set(0, 0, 13)
+    const camera = new THREE.PerspectiveCamera(FOV, W / H, 0.1, 100)
+    camera.position.set(0, 0, CAM_Z)
 
     const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(W, H)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 0.7
     container.appendChild(renderer.domElement)
 
-    // Fallback background particles (always visible)
+    // Fallback particles
     const fallbackParticles = createFallbackBackground(scene)
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4)
-    scene.add(ambientLight)
-
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4))
     const spot1 = new THREE.SpotLight(0xffffff, 1, 20, 0.8, 0.5)
     spot1.position.set(-5, 8, 5)
     spot1.castShadow = true
     scene.add(spot1)
-
     const spot2 = new THREE.SpotLight(0x00d4ff, 0.5, 20, 0.6, 0.5)
     spot2.position.set(5, 3, 5)
     scene.add(spot2)
 
-    // Word groups storage
+    // Word groups
     interface WordGroup {
       group: THREE.Group
       letters: THREE.Mesh[]
@@ -224,16 +231,14 @@ export default function Hero3D() {
     let fontLoaded = false
 
     const textureTypes: Array<'particles' | 'grid' | 'ribbons' | 'glitch' | 'burst'> = [
-      'particles', 'grid', 'ribbons', 'glitch', 'burst'
+      'particles', 'grid', 'ribbons', 'glitch', 'burst',
     ]
 
-    // Load font and create text
     const loader = new FontLoader()
     loader.load(
       'https://threejs.org/examples/fonts/helvetiker_bold.typeface.json',
       (font) => {
         fontLoaded = true
-        // Reduce fallback particles when text loads
         fallbackParticles.material.opacity = 0.2
 
         WORDS.forEach((word, wordIdx) => {
@@ -250,20 +255,20 @@ export default function Hero3D() {
           texture.minFilter = THREE.LinearFilter
           texture.magFilter = THREE.LinearFilter
 
-          const textSize = isMobile ? 0.5 : 0.8
+          // Measure full word width to center group
           const tempGeo = new TextGeometry(word, {
             font,
-            size: textSize,
-            depth: isMobile ? 0.2 : 0.4,
+            size: TEXT_SIZE,
+            depth: TEXT_DEPTH,
             bevelEnabled: true,
-            bevelSize: 0.02,
-            bevelThickness: 0.02,
+            bevelSize: 0.01,
+            bevelThickness: 0.01,
             curveSegments: isMobile ? 3 : 6,
           })
           tempGeo.computeBoundingBox()
           const totalWidth = tempGeo.boundingBox!.max.x - tempGeo.boundingBox!.min.x
-
           group.position.x = -totalWidth / 2
+          tempGeo.dispose()
 
           const letters: THREE.Mesh[] = []
           let xOffset = 0
@@ -271,17 +276,17 @@ export default function Hero3D() {
           for (let i = 0; i < word.length; i++) {
             const letterGeo = new TextGeometry(word[i], {
               font,
-              size: textSize,
-              depth: isMobile ? 0.2 : 0.4,
+              size: TEXT_SIZE,
+              depth: TEXT_DEPTH,
               bevelEnabled: true,
-              bevelSize: 0.02,
-              bevelThickness: 0.02,
+              bevelSize: 0.01,
+              bevelThickness: 0.01,
               curveSegments: isMobile ? 3 : 6,
             })
 
             const mat = new THREE.MeshPhongMaterial({
               color: 0x00d4ff,
-              emissive: new THREE.Color(0x00aaff),  // self-glow, doesn't need light
+              emissive: new THREE.Color(0x00aaff),
               emissiveIntensity: 0.8,
               shininess: 120,
               specular: new THREE.Color(0x00ffff),
@@ -297,9 +302,9 @@ export default function Hero3D() {
               finalY: 0,
               finalZ: 0,
               index: i,
-              scatterX: (Math.random() - 0.5) * 10,
-              scatterY: (Math.random() - 0.5) * 10,
-              scatterZ: (Math.random() - 0.5) * 10,
+              scatterX: (Math.random() - 0.5) * SCATTER,
+              scatterY: (Math.random() - 0.5) * SCATTER,
+              scatterZ: (Math.random() - 0.5) * SCATTER,
               rotX: (Math.random() - 0.5) * Math.PI * 2,
               rotY: (Math.random() - 0.5) * Math.PI * 2,
               rotZ: (Math.random() - 0.5) * Math.PI * 2,
@@ -312,7 +317,7 @@ export default function Hero3D() {
             letters.push(mesh)
 
             letterGeo.computeBoundingBox()
-            xOffset += (letterGeo.boundingBox!.max.x - letterGeo.boundingBox!.min.x) + textSize * 0.05
+            xOffset += (letterGeo.boundingBox!.max.x - letterGeo.boundingBox!.min.x) + TEXT_SIZE * 0.05
           }
 
           scene.add(group)
@@ -325,9 +330,7 @@ export default function Hero3D() {
         }
       },
       undefined,
-      (err) => {
-        console.warn('Font load failed, showing fallback particles only:', err)
-      }
+      (err) => console.warn('Font load failed:', err)
     )
 
     // Animation loop
@@ -339,11 +342,9 @@ export default function Hero3D() {
       frameRef.current = requestAnimationFrame(animate)
       time++
 
-      // Animate fallback particles
       fallbackParticles.rotation.y += 0.0003
       fallbackParticles.rotation.x = Math.sin(time * 0.001) * 0.02
 
-      // Update text animation
       if (fontLoaded && wordGroups.length > 0 && wordGroups[currentWordIndex]) {
         const wg = wordGroups[currentWordIndex]
         wordTimer++
@@ -356,7 +357,6 @@ export default function Hero3D() {
         if (t < PHASE_ZOOM_IN) {
           const progress = t / PHASE_ZOOM_IN
           const eased = 1 - Math.pow(1 - progress, 3)
-
           wg.group.scale.setScalar(0.1 + eased * 1.4)
 
           wg.letters.forEach((mesh, i) => {
@@ -376,7 +376,9 @@ export default function Hero3D() {
             mat.opacity = letterEased * 0.9
           })
         } else if (t < PHASE_HOLD) {
-          wg.group.scale.setScalar(1.5)
+          // Clamp scale on mobile so text never overflows
+          const maxScale = isMobile ? 1.1 : 1.5
+          wg.group.scale.setScalar(maxScale)
           wg.group.rotation.y = -0.3 + Math.sin(t * 0.002) * 0.05
 
           wg.letters.forEach((mesh) => {
@@ -386,8 +388,8 @@ export default function Hero3D() {
         } else if (t < WORD_DURATION) {
           const progress = (t - PHASE_HOLD) / (WORD_DURATION - PHASE_HOLD)
           const eased = progress * progress
-
-          wg.group.scale.setScalar(1.5 + eased * 1.5)
+          const maxScale = isMobile ? 1.1 : 1.5
+          wg.group.scale.setScalar(maxScale + eased * 1.5)
 
           wg.letters.forEach((mesh) => {
             const mat = mesh.material as THREE.MeshPhongMaterial
@@ -419,10 +421,15 @@ export default function Hero3D() {
 
     animate()
 
+    // Resize handler — recalculates everything
     const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
+      const nW = container.offsetWidth
+      const nH = container.offsetHeight
+      const nowMobile = nW < 768
+      camera.fov = nowMobile ? 55 : 40
+      camera.aspect = nW / nH
       camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.setSize(nW, nH)
     }
     window.addEventListener('resize', onResize)
 
