@@ -31,6 +31,8 @@ const results = [
   { metric: '700+', detail: 'RACE Protocol onboarding campaign' },
   { metric: '100 → 3,000+', detail: 'GameX Labs X account growth in a month' },
   { metric: '2–5X', detail: 'Overall market cap growth multiplier' },
+  { metric: '200+', detail: 'Xpend users onboarded and activated within the first month' },
+  { metric: '$200K+', detail: 'Transaction volume generated on the platform within the first month' },
 ]
 const testimonials = [
   {
@@ -49,6 +51,10 @@ const testimonials = [
     quote: "What I liked about working with Astro is he didn't treat this like another promo job. He actually cared about getting people into the game and trying it. We saw real activity, real players coming in, not just empty traffic.",
     author: 'Founder, HoneyLand',
   },
+  {
+  quote: "Within less than a month, Astro helped onboard over 200 users and contributed significantly to platform activity. The growth execution was consistent, measurable, and delivered real transaction volume.",
+  author: 'Core Team, Xpend',
+},
 ]
 
 export default function Results() {

@@ -364,14 +364,15 @@ function ProjectsShowcase() {
   const ref = useScrollEntrance()
 
   const projects = [
-    { name: 'PIXP Token', tagline: '$4K presale raised', image: '/images/project-pixp.jpg' },
-    { name: 'HoneyLand', tagline: '250+ gamers converted', image: '/images/project-honeyland.jpg' },
-    { name: 'Fooz Token', tagline: '$5K → $150K+ market cap in a week', image: '/images/project-fooz.jpg' },
-    { name: 'RACE Protocol', tagline: '700+ onboarding campaign', image: '/images/project-race.jpg' },
-    { name: 'FundiLabs', tagline: '20+ investors connected', image: '/images/project-fundylabs.jpg' },
-    { name: 'GMC', tagline: 'Community scaling system', image: '/images/project-gmc.jpg' },
-    { name: 'GameX Labs', tagline: '100 → 3K+ X account growth in a month', image: '/images/project-gamex.jpg' },
-  ]
+  { name: 'PIXP Token', tagline: '$4K presale raised', image: '/images/project-pixp.jpg' },
+  { name: 'HoneyLand', tagline: '250+ gamers converted', image: '/images/project-honeyland.jpg' },
+  { name: 'Fooz Token', tagline: '$5K → $150K+ market cap in a week', image: '/images/project-fooz.jpg' },
+  { name: 'RACE Protocol', tagline: '700+ onboarding campaign', image: '/images/project-race.jpg' },
+  { name: 'FundiLabs', tagline: '20+ investors connected', image: '/images/project-fundylabs.jpg' },
+  { name: 'GMC', tagline: 'Community scaling system', image: '/images/project-gmc.jpg' },
+  { name: 'GameX Labs', tagline: '100 → 3K+ X account growth in a month', image: '/images/project-gamex.jpg' },
+  {name: 'Xpend', tagline: '200+ users onboarded • $200K+ transaction volume', image: '/images/project-xpend.jpg'},
+]
 
   const scroll = (dir: number) => {
     if (scrollRef.current) {
